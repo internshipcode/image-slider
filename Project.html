@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Slider</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .slider-container {
+    max-width: 800px;
+    margin: 50px auto;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #ddd;
+  }
+  .slide {
+    display: none;
+    width: 100%;
+    transition: opacity 0.5s ease;
+  }
+  img {
+    width: 100%;
+    vertical-align: middle;
+  }
+  .prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .prev {
+    left: 0;
+  }
+  .next {
+    right: 0;
+  }
+  .caption {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 8px 0;
+  }
+  .dot-container {
+    text-align: center;
+    margin-top: 10px;
+  }
+  .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0 5px;
+  }
+  .dot.active {
+    background-color: #717171;
+  }
+</style>
+</head>
+<body>
+
+<div class="slider-container">
+  <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+  <button class="next" onclick="plusSlides(1)">&#10095;</button>
+
+  <div class="slide fade">
+    <img src="image1.jpg" alt="Image 1">
+    <div class="caption">Caption 1</div>
+  </div>
+
+  <div class="slide fade">
+    <img src="image2.jpg" alt="Image 2">
+    <div class="caption">Caption 2</div>
+  </div>
+
+  <div class="slide fade">
+    <img src="image3.jpg" alt="Image 3">
+    <div class="caption">Caption 3</div>
+  </div>
+
+  <div class="dot-container">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+  </div>
+</div>
+
+<script>
+  let slideIndex = 1;
+  showSlides(slideIndex);
+
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
+  }
+
+  function showSlides(n) {
+    let i;
+    let slides = document.getElementsByClassName("slide");
+    let dots = document.getElementsByClassName("dot");
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+  }
+
+  let autoSlideInterval;
+
+  function autoSlide() {
+    autoSlideInterval = setInterval(function() {
+      plusSlides(1);
+    }, 2000);
+  }
+
+  autoSlide();
+
+  let pauseButton = document.createElement('button');
+  pauseButton.textContent = 'Pause';
+  pauseButton.classList.add('pause');
+  pauseButton.onclick = function() {
+    clearInterval(autoSlideInterval);
+    pauseButton.textContent = 'Play';
+    pauseButton.onclick = function() {
+      autoSlide();
+      pauseButton.textContent = 'Pause';
+    };
+  };
+
+  document.querySelector('.slider-container').appendChild(pauseButton);
+</script>
+
+</body>
+</html>
